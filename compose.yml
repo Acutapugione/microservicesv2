@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  frontend:
+    restart: always
+    build: 
+      context: .
+      dockerfile: ./frontend/Dockerfile
+    ports:
+      - "0.0.0.0:5000:5000" 
+    command: sh -c "flask --app frontend run --debug  --host=0.0.0.0"
+    depends_on:
+      - backend
+    volumes:
+        - .:/app
+
+  backend:
+    restart: always
+    build: 
+      context: .
+      dockerfile: ./backend/Dockerfile
+    volumes:
+      - .:/app
+
+    ports:
+      - "0.0.0.0:8000:8000" #8000
+    command: sh -c "fastapi run backend.py"
+
